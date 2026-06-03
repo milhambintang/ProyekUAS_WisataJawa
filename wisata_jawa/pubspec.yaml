@@ -1,5 +1,5 @@
 name: wisata_jawa
-description: "A new Flutter project."
+description: "Rekomendasi Wisata Pulau Jawa"
 publish_to: 'none'
 version: 0.1.0
 
@@ -12,7 +12,10 @@ dependencies:
   firebase_core: ^3.1.0
   firebase_auth: ^5.0.0
   firebase_database: ^11.0.0
+  cloud_firestore: ^5.6.0
+  image_picker: ^1.1.2
   intl: ^0.18.0
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
