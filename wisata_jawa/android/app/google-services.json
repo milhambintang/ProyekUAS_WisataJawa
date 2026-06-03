@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "874365327142",
+    "project_id": "wisatajawa-31ac5",
+    "storage_bucket": "wisatajawa-31ac5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874365327142:android:25176caccddf6233bb93e7",
+        "android_client_info": {
+          "package_name": "com.example.wisata_jawa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6liSrFy-hGK78_FH0pVh7Z8Qgmpb8_b4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
