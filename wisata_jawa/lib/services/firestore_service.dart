@@ -1,15 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wisata_jawa/models/wisata.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore untuk database
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase Auth untuk autentikasi
+import 'package:wisata_jawa/models/wisata.dart'; // Model Wisata untuk representasi data wisata
 
 class FirestoreService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance; // Instance Firestore
 
   // ============================================
   // WISATA CRUD
   // ============================================
 
   // Daftar provinsi di Pulau Jawa
-  static const List<String> provinsiList = [
+  static const List<String> provinsiList = [ // Daftar provinsi di Pulau Jawa
     'Banten',
     'DKI Jakarta',
     'Jawa Barat',
@@ -21,24 +22,24 @@ class FirestoreService {
   // Tambah wisata baru
   Future<String> addWisata(Wisata wisata) async {
     final docRef = await _db.collection('wisata').add(wisata.toFirestore());
-    return docRef.id;
+    return docRef.id; // Kembalikan ID dokumen yang baru dibuat
   }
 
   // Update wisata
   Future<void> updateWisata(Wisata wisata) async {
-    await _db.collection('wisata').doc(wisata.id).update(wisata.toFirestore());
+    await _db.collection('wisata').doc(wisata.id).update(wisata.toFirestore()); // Update dokumen berdasarkan ID
   }
 
   // Hapus wisata beserta favorit user yang menghapus
   // Favorit user lain akan di-cleanup otomatis oleh getFavoriteWisata
-  Future<void> deleteWisata(String wisataId, {String? userId}) async {
+  Future<void> deleteWisata(String wisataId, {String? userId}) async { // Hapus wisata dan juga referensi favorit jika userId disediakan (user yang menghapus)
     final batch = _db.batch();
 
     // Hapus dokumen wisata
-    batch.delete(_db.collection('wisata').doc(wisataId));
+    batch.delete(_db.collection('wisata').doc(wisataId)); // Hapus dokumen wisata berdasarkan ID
 
     // Hapus juga dari favorit user yang menghapus
-    if (userId != null) {
+    if (userId != null) { // Jika userId disediakan, hapus referensi favorit untuk user tersebut
       batch.delete(
         _db.collection('users').doc(userId).collection('favorites').doc(wisataId),
       );

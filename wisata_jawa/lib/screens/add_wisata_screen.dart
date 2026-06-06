@@ -9,28 +9,28 @@ import 'package:wisata_jawa/services/firestore_service.dart';
 class AddWisataScreen extends StatefulWidget {
   final Wisata? wisata; // null = tambah baru, non-null = edit
 
-  const AddWisataScreen({super.key, this.wisata});
+  const AddWisataScreen({super.key, this.wisata}); // Parameter opsional untuk edit wisata
 
   @override
-  State<AddWisataScreen> createState() => _AddWisataScreenState();
+  State<AddWisataScreen> createState() => _AddWisataScreenState(); // Membuat state untuk AddWisataScreen
 }
 
-class _AddWisataScreenState extends State<AddWisataScreen> {
+class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk AddWisataScreen
   final _formKey = GlobalKey<FormState>();
   final FirestoreService _firestoreService = FirestoreService();
   final String? _userId = FirebaseAuth.instance.currentUser?.uid;
 
-  late TextEditingController _namaController;
+  late TextEditingController _namaController; // Controller untuk input nama wisata
   late TextEditingController _deskripsiController;
   late TextEditingController _kotaController;
 
-  String _selectedProvinsi = FirestoreService.provinsiList.first;
+  String _selectedProvinsi = FirestoreService.provinsiList.first; // Default provinsi pertama dari daftar
   double _rating = 4.0;
   String _base64Image = '';
   Uint8List? _imagePreview;
   bool _isLoading = false;
 
-  bool get _isEditing => widget.wisata != null;
+  bool get _isEditing => widget.wisata != null; // Menentukan apakah sedang dalam mode edit atau tambah baru
 
   @override
   void initState() {

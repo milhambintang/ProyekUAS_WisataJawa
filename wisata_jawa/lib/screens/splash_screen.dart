@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _checkAuth() async {
     // Menunda 3 detik untuk efek splash + animasi
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 5));
 
     // Cek apakah widget masih aktif (mounted) sebelum navigasi
     if (!mounted) return;
