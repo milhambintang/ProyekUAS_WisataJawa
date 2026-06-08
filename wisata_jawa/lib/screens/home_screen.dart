@@ -12,9 +12,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// State untuk HomeScreen, yang mengelola navigasi antar tab menggunakan BottomNavigationBar dan IndexedStack
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
+// Daftar tab yang akan ditampilkan di IndexedStack, masing-masing tab adalah widget yang sudah dibuat untuk menampilkan konten yang berbeda
   final List<Widget> _tabs = const [
     HomeTab(),
     SearchTab(),
@@ -22,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfileTab(),
   ];
 
+// Build method untuk membangun UI HomeScreen, yang terdiri dari Scaffold dengan body sebagai IndexedStack untuk menampilkan tab yang aktif, dan BottomNavigationBar untuk navigasi antar tab
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!; // l10n
@@ -94,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+// Helper method untuk membangun ikon navigasi biasa, dengan padding bawah untuk memberikan jarak antara ikon dan label
   Widget _buildNavIcon(IconData icon, int index) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
@@ -101,6 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+// Helper method untuk membangun ikon navigasi aktif, dengan latar belakang berwarna dan padding untuk 
+//memberikan efek highlight pada tab yang aktif
   Widget _buildActiveNavIcon(IconData icon, int index) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),

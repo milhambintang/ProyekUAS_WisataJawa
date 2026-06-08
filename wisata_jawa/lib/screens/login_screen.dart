@@ -10,19 +10,24 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+// State untuk LoginScreen, yang mengelola form login, validasi input, dan interaksi dengan AuthService untuk proses autentikasi
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
+  final _emailController = TextEditingController(); // Controller untuk mengelola input email dan password dari user
+  final _passwordController = TextEditingController(); // Controller untuk mengelola input email dan password dari user
+  final AuthService _authService = AuthService(); // Instance dari AuthService untuk melakukan operasi autentikasi seperti signIn
   bool _isLoading = false;
   bool _obscurePassword = true;
   String? _errorMessage;
 
+  // Animasi untuk efek masuk halaman login, 
+  // dengan fade dan slide dari bawah ke atas untuk memberikan kesan yang lebih dinamis saat halaman muncul
   late AnimationController _animController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
+// Inisialisasi animasi saat state dibuat, dengan durasi 800ms dan kurva yang memberikan efek masuk yang halus,
+// kemudian mulai animasi untuk memulai efek masuk halaman login
   @override
   void initState() {
     super.initState();
@@ -44,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen>
     _animController.forward();
   }
 
+  // Dispose method untuk membersihkan controller animasi dan text editing controller saat state dihapus, untuk mencegah memory leak
   @override
   void dispose() {
     _animController.dispose();
@@ -52,6 +58,8 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
+  // Method untuk menangani proses login, yang akan memanggil method signIn dari AuthService dengan email dan password yang diinput oleh user,
+  // serta mengelola state loading dan error message untuk memberikan feedback kepada user selama proses login
   Future<void> _login() async {
     setState(() {
       _isLoading = true;
@@ -83,6 +91,8 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+  // Build method untuk membangun UI halaman login, yang terdiri dari form input email dan password, tombol login, 
+  // serta link untuk menuju halaman register
   @override
   Widget build(BuildContext context) {
     return Scaffold(

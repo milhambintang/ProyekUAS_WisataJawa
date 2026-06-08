@@ -16,15 +16,18 @@ class HomeTab extends StatefulWidget {
   State<HomeTab> createState() => _HomeTabState();
 }
 
+// State untuk HomeTab, yang menampilkan daftar wisata dengan filter berdasarkan provinsi, 
+// serta fitur favorit dan navigasi ke detail wisata
 class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   final FirestoreService _firestoreService = FirestoreService();
   final String? _userId = FirebaseAuth.instance.currentUser?.uid;
   int _selectedProvinsiIndex = 0;
 
+// Animation controller untuk animasi fade in saat tab pertama kali dibuka
   late AnimationController _animController;
   late Animation<double> _fadeAnimation;
 
-  // Ikon untuk setiap provinsi tab
+// Daftar ikon untuk setiap provinsi, digunakan di tab filter provinsi
   final List<IconData> _provinsiIcons = [
     Icons.public_rounded,
     Icons.temple_buddhist_rounded,
@@ -35,10 +38,12 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     Icons.mosque_rounded,
   ];
 
-  // Set untuk menyimpan ID favorit
+// Set untuk menyimpan ID wisata favorit pengguna, 
+//dan subscription untuk mendengarkan perubahan data favorit secara real-time
   Set<String> _favoriteIds = {};
   StreamSubscription? _favoriteSub;
 
+// Inisialisasi state, mulai mendengarkan data favorit, dan setup animasi fade in untuk tampilan awal tab
   @override
   void initState() {
     super.initState();
@@ -54,6 +59,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     _animController.forward();
   }
 
+// Dispose method untuk membersihkan subscription dan controller animasi saat widget dihapus dari tree, untuk mencegah memory leak
   @override
   void dispose() { //
     _favoriteSub?.cancel();
@@ -61,6 +67,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
+// Method untuk mulai mendengarkan data favorit pengguna dari Firestore, dan update state ketika data berubah
   void _listenFavorites() {
     if (_userId == null) return;
     _favoriteSub = _firestoreService.getFavoriteIds(_userId!).listen((ids) {
@@ -72,6 +79,8 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     });
   }
 
+// Method untuk toggle status favorit sebuah wisata, jika sudah favorit maka akan dihapus dari favorit, 
+// jika belum maka akan ditambahkan ke favorit
   void _toggleFavorite(String wisataId) {
     if (_userId == null) return;
     if (_favoriteIds.contains(wisataId)) {
@@ -81,7 +90,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     }
   }
 
-  // Daftar provinsi tabs (pertama = "Semua" / terlokalisasi)
+// Method untuk mendapatkan daftar nama tab provinsi, dengan opsi "Semua" di awal, dan ikon yang sesuai untuk setiap tab
   List<String> _getProvinsiTabs(AppLocalizations l10n) {
     return [
       l10n.allProvinces,
@@ -89,6 +98,8 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     ];
   }
 
+// Method untuk mendapatkan stream daftar wisata berdasarkan provinsi yang dipilih, 
+// jika tab "Semua" dipilih maka akan mengambil semua wisata,
   Stream<List<Wisata>> _getWisataStream() {
     if (_selectedProvinsiIndex == 0) {
       return _firestoreService.getSemuaWisata();
@@ -101,6 +112,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
         .getWisataByProvinsi(provinsiTabs[_selectedProvinsiIndex]);
   }
 
+// Helper method untuk mendapatkan greeting berdasarkan waktu saat ini, dengan menggunakan localized string dari l10n
   String _getGreeting(AppLocalizations l10n) {
     final hour = DateTime.now().hour;
     if (hour < 12) return l10n.greetingMorning;
@@ -109,6 +121,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     return l10n.greetingNight;
   }
 
+// Build method untuk membangun UI HomeTab, yang terdiri dari header dengan greeting dan language selector,
+// tab filter provinsi, dan grid daftar wisata yang diambil dari stream berdasarkan filter yang dipilih, 
+// serta handling untuk loading, error, dan empty state dengan tampilan yang sesuai
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!; // l10n
@@ -119,13 +134,14 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
         opacity: _fadeAnimation,
         child: Column(
           children: [
-            // Header with gradient & greeting
+            // Header dengan greeting dan language selector
             _buildHeader(context, l10n),
 
-            // Provinsi tabs
+            // Provinsi filter tabs
             _buildProvinsiTabs(l10n),
 
-            // Wisata grid
+            // Expanded untuk mengisi sisa ruang dengan daftar wisata, 
+            // menggunakan StreamBuilder untuk mendengarkan stream data wisata berdasarkan filter provinsi yang dipilih
             Expanded(
               child: StreamBuilder<List<Wisata>>(
                 stream: _getWisataStream(),
@@ -161,6 +177,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                     );
                   }
 
+                  // Handling untuk kondisi error saat mengambil data, tampilkan pesan error dengan ikon yang sesuai
                   if (snapshot.hasError) {
                     return Center(
                       child: Padding(
@@ -201,8 +218,10 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                     );
                   }
 
-                  final wisataList = snapshot.data ?? [];
+                  final wisataList = snapshot.data ?? []; // Jika data null, gunakan list kosong
 
+                  // Handling untuk kondisi ketika tidak ada data wisata yang sesuai dengan filter, 
+                  // tampilkan pesan empty state dengan ikon
                   if (wisataList.isEmpty) {
                     return Center(
                       child: Column(
@@ -265,6 +284,8 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                     );
                   }
 
+                  // Jika data tersedia, tampilkan dalam bentuk grid dengan 2 kolom, menggunakan WisataCard untuk setiap item,
+                  // dan navigasi ke detail wisata saat card ditekan, serta toggle favorit saat ikon favorit ditekan
                   return GridView.builder(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                     gridDelegate:
@@ -333,6 +354,8 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     );
   }
 
+  // Helper method untuk membangun header dengan greeting dan language selector,
+  // menggunakan gradient background dan styling yang konsisten dengan tema aplikasi
   Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
     final currentLocale = Localizations.localeOf(context).languageCode; // l10n
 
@@ -433,6 +456,8 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     );
   }
 
+  // Helper method untuk membangun item menu bahasa di language selector, 
+  // dengan ikon bendera dan label bahasa, serta tanda centang untuk bahasa yang sedang aktif
   PopupMenuItem<String> _buildLanguageMenuItem(
       String code, String label, String flag, String currentLocale) {
     return PopupMenuItem(
@@ -452,6 +477,8 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     );
   }
 
+  // Helper method untuk membangun tab filter provinsi, dengan tampilan yang menarik menggunakan gradient untuk tab yang aktif,
+  // dan ikon yang sesuai untuk setiap provinsi, serta handling untuk perubahan tab yang dipilih
   Widget _buildProvinsiTabs(AppLocalizations l10n) {
     final provinsiTabs = _getProvinsiTabs(l10n);
 

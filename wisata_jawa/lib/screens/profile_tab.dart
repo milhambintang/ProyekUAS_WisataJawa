@@ -16,6 +16,9 @@ class ProfileTab extends StatefulWidget {
   State<ProfileTab> createState() => _ProfileTabState();
 }
 
+
+// State untuk ProfileTab, yang menampilkan informasi profil user, menu pengaturan seperti ganti bahasa dan logout, 
+// serta daftar wisata yang ditambahkan oleh user, dengan interaksi untuk melihat detail wisata dan mengubah bahasa aplikasi
 class _ProfileTabState extends State<ProfileTab> {
   final AuthService _authService = AuthService();
   final FirestoreService _firestoreService = FirestoreService();
@@ -33,6 +36,7 @@ class _ProfileTabState extends State<ProfileTab> {
   // Locale aktif saat ini
   String _currentLocale = 'id';
 
+  // Method untuk memformat tanggal menjadi string dengan format "dd MMMM yyyy",
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -43,12 +47,14 @@ class _ProfileTabState extends State<ProfileTab> {
     }
   }
 
+  // Helper method untuk memformat tanggal menjadi string dengan format "dd MMMM yyyy",
   void _changeLanguage(String langCode) {
     setState(() => _currentLocale = langCode);
     MainApp.setLocale(Locale(langCode));
     Navigator.pop(context); // tutup bottom sheet
   }
 
+  // Helper method untuk menampilkan dialog konfirmasi logout, dengan opsi untuk membatalkan atau melanjutkan logout
   void _showLanguageSheet() {
     final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
@@ -154,10 +160,12 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
+  // Helper method untuk menampilkan dialog konfirmasi logout, dengan opsi untuk membatalkan atau melanjutkan logout
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!; // l10n
 
+    // Jika user belum login, tampilkan pesan bahwa login diperlukan untuk melihat profil
     if (_user == null) {
       return Center(child: Text(l10n.loginRequired)); // l10n
     }
@@ -319,7 +327,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           iconColor: const Color(0xFF1565C0),
                           title: l10n.language, // l10n
                           subtitle: _languages
-                              .firstWhere(
+                              .firstWhere( // Cari label bahasa berdasarkan _currentLocale
                                 (l) => l.code == _currentLocale,
                                 orElse: () => _languages.first,
                               )
@@ -361,7 +369,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           subtitleColor: const Color(0xFFEF9A9A),
                           trailing: Icon(Icons.chevron_right_rounded,
                               color: Colors.grey.shade300),
-                          onTap: () => _showLogoutDialog(context),
+                          onTap: () => _showLogoutDialog(context), // Tampilkan dialog konfirmasi logout
                           isLast: true,
                         ),
                       ],
@@ -400,7 +408,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
                   // ── Daftar wisata user ──────────────────────────────
                   StreamBuilder<List<Wisata>>(
-                    stream: _firestoreService.getWisataByUser(_user!.uid),
+                    stream: _firestoreService.getWisataByUser(_user!.uid), // Stream wisata yang ditambahkan oleh user saat ini
                     builder: (context, snapshot) {
                       if (snapshot.connectionState ==
                           ConnectionState.waiting) {
@@ -414,7 +422,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         );
                       }
 
-                      final wisataList = snapshot.data ?? [];
+                      final wisataList = snapshot.data ?? []; // Daftar wisata yang ditambahkan oleh user, atau list kosong jika belum ada data
 
                       if (wisataList.isEmpty) {
                         return Container(
@@ -480,7 +488,7 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  // ── Helper: Menu tile ─────────────────────────────────────────────────
+  // Helper method untuk menampilkan dialog konfirmasi logout, dengan opsi untuk membatalkan atau melanjutkan logout
   Widget _buildMenuTile({
     required IconData icon,
     required Color iconBgColor,
@@ -549,7 +557,7 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  // ── Helper: Stat item ─────────────────────────────────────────────────
+  // Helper method untuk menampilkan dialog konfirmasi logout, dengan opsi untuk membatalkan atau melanjutkan logout
   Widget _buildStatItem(String value, String label, IconData icon) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -708,6 +716,7 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
+  // Helper method untuk menampilkan dialog konfirmasi logout, dengan opsi untuk membatalkan atau melanjutkan logout
   Widget _thumbPlaceholder() {
     return Container(
       decoration: const BoxDecoration(
@@ -719,19 +728,23 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  // ── Helper: Format tanggal ─────────────────────────────────────────────
+  // Helper method untuk menampilkan dialog konfirmasi logout, dengan opsi untuk membatalkan atau melanjutkan logout
   String _formatDate(DateTime? date) {
     if (date == null) return '-';
-    final locale = Localizations.localeOf(context).languageCode;
-    // Nama bulan sesuai bahasa aktif
+    final locale = Localizations.localeOf(context).languageCode; // Dapatkan kode bahasa dari context untuk menentukan nama bulan yang sesuai
+    // Daftar nama bulan untuk beberapa bahasa, dengan format singkatan 3 huruf, yang akan dipilih berdasarkan locale aktif
     const monthsId = [
       'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
       'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
     ];
+
+    // Daftar nama bulan untuk beberapa bahasa, dengan format singkatan 3 huruf, yang akan dipilih berdasarkan locale aktif
     const monthsEn = [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
+
+    // Daftar nama bulan untuk beberapa bahasa, dengan format singkatan 3 huruf, yang akan dipilih berdasarkan locale aktif
     const monthsTh = [
       'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
       'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
@@ -744,7 +757,8 @@ class _ProfileTabState extends State<ProfileTab> {
       '1月', '2月', '3月', '4月', '5月', '6月',
       '7月', '8月', '9月', '10月', '11月', '12月'
     ];
-
+    
+    // Pilih daftar nama bulan yang sesuai dengan locale aktif, default ke bahasa Indonesia jika locale tidak dikenali
     final months = switch (locale) {
       'th' => monthsTh,
       'ko' => monthsKo,
@@ -753,10 +767,11 @@ class _ProfileTabState extends State<ProfileTab> {
       _ => monthsId,
     };
 
+    // Format tanggal menjadi string dengan format "dd MMM yyyy", menggunakan nama bulan yang sesuai dengan locale aktif
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 
-  // ── Dialog Logout ──────────────────────────────────────────────────────
+  // Helper method untuk menampilkan dialog konfirmasi logout, dengan opsi untuk membatalkan atau melanjutkan logout
   void _showLogoutDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!; // l10n
     showDialog(
@@ -830,7 +845,7 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 }
 
-// ── Data class untuk pilihan bahasa ────────────────────────────────────────
+// Model untuk opsi bahasa, yang menyimpan kode bahasa, label yang ditampilkan, dan emoji bendera yang sesuai
 class _LangOption {
   final String code;
   final String label;

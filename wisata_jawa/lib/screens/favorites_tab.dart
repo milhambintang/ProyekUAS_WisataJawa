@@ -15,24 +15,31 @@ class FavoritesTab extends StatefulWidget {
 }
 
 class _FavoritesTabState extends State<FavoritesTab> {
-  final FirestoreService _firestoreService = FirestoreService();
-  final String? _userId = FirebaseAuth.instance.currentUser?.uid;
+  final FirestoreService _firestoreService = FirestoreService(); // Instance untuk mengakses Firestore
+  final String? _userId = FirebaseAuth.instance.currentUser?.uid; // Ambil UID user yang sedang login, jika tidak ada maka null
 
+// Set untuk menyimpan ID wisata yang difavoritkan oleh user, 
+//dan StreamSubscription untuk mendengarkan perubahan data favorit
   Set<String> _favoriteIds = {};
   StreamSubscription? _favoriteSub;
 
+// Inisialisasi state, mulai mendengarkan data favorit user saat widget dibuat, 
+//dan pastikan untuk membatalkan langganan saat widget dihapus
   @override
   void initState() {
     super.initState();
     _listenFavorites();
   }
 
+// Dispose method untuk membatalkan langganan ke stream saat widget dihapus, untuk mencegah memory leak
   @override
   void dispose() {
     _favoriteSub?.cancel();
     super.dispose();
   }
 
+// Method untuk mendengarkan perubahan data favorit user,
+// jika userId tidak null maka subscribe ke stream yang mengembalikan list ID favorit,
   void _listenFavorites() {
     if (_userId == null) return;
     _favoriteSub = _firestoreService.getFavoriteIds(_userId!).listen((ids) {
@@ -44,6 +51,8 @@ class _FavoritesTabState extends State<FavoritesTab> {
     });
   }
 
+// Method untuk toggle status favorit sebuah wisata, 
+//jika sudah difavoritkan maka hapus dari favorit, jika belum maka tambahkan ke favorit
   void _toggleFavorite(String wisataId) {
     if (_userId == null) return;
     if (_favoriteIds.contains(wisataId)) {
@@ -61,6 +70,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
       return Center(child: Text(l10n.loginRequired)); // l10n
     }
 
+// Scaffold utama untuk menampilkan daftar favorit, dengan header dan grid list wisata favorit
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAF8),
       body: Column(
@@ -134,7 +144,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
             ),
           ),
 
-          // Favorites list
+          // Konten utama untuk menampilkan daftar favorit, dengan handling untuk loading, error, dan empty state
           Expanded(
             child: StreamBuilder<List<Wisata>>(
               stream: _firestoreService.getFavoriteWisata(_userId!),
@@ -170,6 +180,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
                   );
                 }
 
+                // Handling error saat mengambil data favorit, tampilkan pesan error dengan ikon
                 if (snapshot.hasError) {
                   return Center(
                     child: Padding(
@@ -202,8 +213,8 @@ class _FavoritesTabState extends State<FavoritesTab> {
                   );
                 }
 
-                final wisataList = snapshot.data ?? [];
-
+                final wisataList = snapshot.data ?? []; // Ambil data wisata favorit, jika null maka gunakan list kosong
+                // Handling untuk kondisi ketika tidak ada wisata favorit, tampilkan pesan empty state dengan ikon
                 if (wisataList.isEmpty) {
                   return Center(
                     child: Column(
@@ -244,6 +255,8 @@ class _FavoritesTabState extends State<FavoritesTab> {
                   );
                 }
 
+                // Jika data favorit tersedia, tampilkan dalam bentuk grid, dengan jumlah favorit di header
+                // dan setiap item wisata dapat diklik untuk melihat detail, serta tombol favorit untuk toggle status favorit
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

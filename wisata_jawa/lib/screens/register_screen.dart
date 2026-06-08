@@ -9,6 +9,8 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+// State untuk RegisterScreen, yang mengelola form pendaftaran pengguna baru, termasuk validasi input, 
+// interaksi dengan AuthService untuk mendaftar, dan navigasi ke HomeScreen setelah berhasil mendaftar
 class _RegisterScreenState extends State<RegisterScreen>
     with SingleTickerProviderStateMixin {
   final _emailController = TextEditingController();
@@ -24,6 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
+  // Inisialisasi animasi untuk efek fade dan slide saat layar register muncul, 
+  // serta mengatur controller untuk animasi tersebut
   @override
   void initState() {
     super.initState();
@@ -44,6 +48,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     ));
     _animController.forward();
   }
+
 
   @override
   void dispose() {

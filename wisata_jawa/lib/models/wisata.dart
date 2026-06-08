@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Wisata {
+class Wisata { // Model untuk data wisata
   final String id;
   final String nama;
   final String deskripsi;
@@ -11,7 +11,7 @@ class Wisata {
   final DateTime createdAt;
   final String createdBy; // UID user
 
-  Wisata({
+  Wisata({ // Konstruktor untuk Wisata
     required this.id,
     required this.nama,
     required this.deskripsi,
@@ -23,8 +23,8 @@ class Wisata {
     required this.createdBy,
   });
 
-  // Membuat Wisata dari Firestore document snapshot
-  factory Wisata.fromFirestore(DocumentSnapshot doc) {
+  // Factory method untuk membuat Wisata dari Firestore DocumentSnapshot
+  factory Wisata.fromFirestore(DocumentSnapshot doc) { 
     final data = doc.data() as Map<String, dynamic>;
     return Wisata(
       id: doc.id,
@@ -39,7 +39,7 @@ class Wisata {
     );
   }
 
-  // Konversi Wisata ke Map untuk disimpan ke Firestore
+  // Method untuk mengubah Wisata menjadi Map untuk disimpan ke Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'nama': nama,
@@ -53,7 +53,7 @@ class Wisata {
     };
   }
 
-  // Copy with method untuk update
+  // Method untuk membuat salinan Wisata dengan beberapa field yang diubah
   Wisata copyWith({
     String? id,
     String? nama,
@@ -65,7 +65,7 @@ class Wisata {
     DateTime? createdAt,
     String? createdBy,
   }) {
-    return Wisata(
+    return Wisata( // Membuat salinan Wisata dengan field yang diubah jika diberikan, atau tetap menggunakan nilai lama
       id: id ?? this.id,
       nama: nama ?? this.nama,
       deskripsi: deskripsi ?? this.deskripsi,

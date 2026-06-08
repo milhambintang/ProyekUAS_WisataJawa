@@ -10,22 +10,23 @@ import '../l10n/app_localizations.dart'; // l10n
 class AddWisataScreen extends StatefulWidget { // Bisa untuk tambah baru (wisata = null) atau edit (wisata != null)
   final Wisata? wisata; // null = tambah baru, non-null = edit
 
-  const AddWisataScreen({super.key, this.wisata});
+  const AddWisataScreen({super.key, this.wisata}); // Konstruktor dengan parameter wisata opsional (null untuk tambah baru, non-null untuk edit)
 
   @override
-  State<AddWisataScreen> createState() => _AddWisataScreenState();
+  State<AddWisataScreen> createState() => _AddWisataScreenState(); // Membuat state untuk AddWisataScreen
 }
 
+// State untuk AddWisataScreen, menangani logika form tambah/edit wisata
 class _AddWisataScreenState extends State<AddWisataScreen> {
   final _formKey = GlobalKey<FormState>();
   final FirestoreService _firestoreService = FirestoreService();
   final String? _userId = FirebaseAuth.instance.currentUser?.uid;
 
-  late TextEditingController _namaController;
+  late TextEditingController _namaController; // Controller untuk input nama wisata
   late TextEditingController _deskripsiController;
   late TextEditingController _kotaController;
 
-  String _selectedProvinsi = FirestoreService.provinsiList.first;
+  String _selectedProvinsi = FirestoreService.provinsiList.first; // Default ke provinsi pertama di list
   double _rating = 4.0;
   String _base64Image = '';
   Uint8List? _imagePreview;
@@ -33,6 +34,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {
 
   bool get _isEditing => widget.wisata != null;
 
+// Inisialisasi state, jika edit maka isi controller dengan data wisata yang ada, dan set provinsi, rating, serta gambar sesuai data wisata
   @override
   void initState() {
     super.initState();
@@ -53,6 +55,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {
     }
   }
 
+// Dispose controller saat widget dihapus untuk mencegah memory leak
   @override
   void dispose() {
     _namaController.dispose();
@@ -93,6 +96,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {
     });
   }
 
+// Method untuk submit form, validasi input, buat objek Wisata, dan simpan ke Firestore (tambah atau update)
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     final l10n = AppLocalizations.of(context)!; // l10n
@@ -111,6 +115,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {
       _isLoading = true; 
     });
 
+// Try-catch untuk menangani error saat menyimpan data ke Firestore, jika sukses tampilkan snackbar dan kembali ke halaman sebelumnya, jika gagal tampilkan error di snackbar
     try {
       final wisata = Wisata(
         id: _isEditing ? widget.wisata!.id : '',
@@ -160,6 +165,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {
     }
   }
 
+// Method untuk membuat InputDecoration yang konsisten untuk semua TextFormField, dengan parameter label dan icon
   InputDecoration _inputDecoration(String label, IconData icon) {
     return InputDecoration(
       labelText: label,
@@ -192,6 +198,8 @@ class _AddWisataScreenState extends State<AddWisataScreen> {
     );
   }
 
+// Build method untuk membangun UI form tambah/edit wisata, dengan input untuk nama, deskripsi, kota, provinsi (dropdown), 
+//rating (slider), dan image picker, serta tombol submit yang menampilkan loading saat proses penyimpanan
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!; // l10n
