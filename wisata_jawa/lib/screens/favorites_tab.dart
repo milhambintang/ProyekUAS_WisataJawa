@@ -5,6 +5,7 @@ import 'package:wisata_jawa/models/wisata.dart';
 import 'package:wisata_jawa/services/firestore_service.dart';
 import 'package:wisata_jawa/widgets/wisata_card.dart';
 import 'package:wisata_jawa/screens/wisata_detail_screen.dart';
+import '../l10n/app_localizations.dart'; // l10n
 
 class FavoritesTab extends StatefulWidget {
   const FavoritesTab({super.key});
@@ -54,8 +55,10 @@ class _FavoritesTabState extends State<FavoritesTab> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
+
     if (_userId == null) {
-      return const Center(child: Text('Silakan login terlebih dahulu'));
+      return Center(child: Text(l10n.loginRequired)); // l10n
     }
 
     return Scaffold(
@@ -91,9 +94,9 @@ class _FavoritesTabState extends State<FavoritesTab> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Wisata Favorit',
-                        style: TextStyle(
+                      Text(
+                        l10n.favoritesTitle, // l10n
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
@@ -102,7 +105,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Koleksi wisata yang kamu sukai',
+                        l10n.favoritesSubtitle, // l10n
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.7),
                           fontSize: 13,
@@ -156,7 +159,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Memuat favorit...',
+                          l10n.loadingFavorites, // l10n
                           style: TextStyle(
                             color: Colors.grey.shade500,
                             fontSize: 13,
@@ -185,9 +188,9 @@ class _FavoritesTabState extends State<FavoritesTab> {
                                 size: 32, color: Color(0xFFFF9800)),
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            'Terjadi Kesalahan',
-                            style: TextStyle(
+                          Text(
+                            l10n.errorGeneral, // l10n
+                            style: const TextStyle(
                               color: Color(0xFF1A1A1A),
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -220,9 +223,9 @@ class _FavoritesTabState extends State<FavoritesTab> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          'Belum Ada Favorit',
-                          style: TextStyle(
+                        Text(
+                          l10n.emptyFavorites, // l10n
+                          style: const TextStyle(
                             color: Color(0xFF1A1A1A),
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -230,7 +233,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Tap ♥ pada wisata untuk menambahkan ke favorit',
+                          l10n.emptyFavoritesHint, // l10n
                           style: TextStyle(
                             color: Colors.grey.shade500,
                             fontSize: 13,
@@ -247,7 +250,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
                       child: Text(
-                        '${wisataList.length} wisata favorit',
+                        l10n.favoritesCount(wisataList.length), // l10n
                         style: TextStyle(
                           color: Colors.grey.shade600,
                           fontSize: 13,

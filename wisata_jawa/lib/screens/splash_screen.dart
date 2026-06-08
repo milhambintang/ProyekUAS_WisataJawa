@@ -232,7 +232,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'v1.0.0',
+                      'Dibuat dengan ❤️ oleh (Bintang, Rika, Rency, Wini, Mutiara)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.3),

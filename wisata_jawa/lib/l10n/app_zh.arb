@@ -1,0 +1,115 @@
+{
+  "@@locale": "zh",
+
+  "appTitle": "爪哇旅游",
+  "appTagline": "✨ 探索爪哇岛的美丽",
+  "appSubtitle": "最佳旅游推荐",
+
+  "greetingMorning": "早上好",
+  "greetingAfternoon": "下午好",
+  "greetingEvening": "傍晚好",
+  "greetingNight": "晚上好",
+
+  "headerTitle": "爪哇岛旅游",
+  "headerSubtitle": "发现爪哇岛最佳旅游目的地",
+
+  "allProvinces": "全部",
+
+  "navHome": "首页",
+  "navSearch": "搜索",
+  "navFavorites": "收藏",
+  "navProfile": "个人资料",
+
+  "loadingWisata": "正在加载景点...",
+  "loadingFavorites": "正在加载收藏...",
+  "searchingWisata": "正在搜索景点...",
+
+  "errorOccurred": "哎呀！出错了",
+  "errorConnection": "请确保您的网络连接稳定",
+  "errorGeneral": "发生错误",
+
+  "emptyWisata": "暂无景点",
+  "emptyWisataHint": "成为第一个添加景点的人！",
+  "emptyFavorites": "暂无收藏",
+  "emptyFavoritesHint": "点击景点上的 ♥ 添加到收藏",
+
+  "addWisata": "添加景点",
+  "editWisata": "编辑景点",
+  "deleteWisata": "删除景点",
+
+  "wisataAdded": "景点添加成功",
+  "wisataUpdated": "景点更新成功",
+  "wisataDeleted": "景点删除成功",
+  "wisataFailed": "失败：{error}",
+
+  "searchTitle": "搜索景点",
+  "searchSubtitle": "寻找您的梦想目的地",
+  "searchHint": "搜索名称、城市或省份...",
+  "searchFavorite": "搜索您喜欢的景点",
+  "searchFavoriteHint": "输入景点名称、城市或省份",
+  "searchNotFound": "未找到景点",
+  "searchNotFoundHint": "尝试其他关键词",
+  "searchResultCount": "找到 {count} 个景点",
+
+  "favoritesTitle": "收藏景点",
+  "favoritesSubtitle": "您喜欢的景点合集",
+  "favoritesCount": "{count} 个收藏景点",
+
+  "loginRequired": "请先登录",
+  "welcome": "欢迎",
+  "loginSubtitle": "登录以探索爪哇岛旅游景点",
+  "emailLabel": "邮箱",
+  "passwordLabel": "密码",
+  "confirmPasswordLabel": "确认密码",
+  "loginButton": "登录",
+  "registerButton": "注册",
+  "noAccount": "还没有账号？",
+  "registerLink": "注册",
+  "hasAccount": "已有账号？",
+  "loginLink": "登录",
+  "createAccount": "创建新账号",
+  "registerSubtitle": "加入并发现爪哇岛旅游景点",
+  "passwordMismatch": "密码不匹配",
+
+  "profileMemberSince": "注册于 {date}",
+  "profileWisataLabel": "景点",
+  "profileFavoriteLabel": "收藏",
+  "profileWisataAdded": "您添加的景点",
+  "profileNoWisata": "暂无景点",
+  "profileNoWisataHint": "您添加的景点将显示在这里",
+
+  "logout": "退出登录",
+  "logoutSubtitle": "退出您的账号",
+  "logoutConfirm": "您确定要退出此账号吗？",
+  "cancel": "取消",
+
+  "wisataNameLabel": "景点名称",
+  "wisataNameRequired": "请填写景点名称",
+  "provinceLabel": "省份",
+  "cityLabel": "城市/区县",
+  "cityRequired": "请填写城市",
+  "descriptionLabel": "描述",
+  "descriptionRequired": "请填写描述",
+  "ratingLabel": "评分：{value}",
+  "updateWisata": "更新景点",
+
+  "tapToPickImage": "点击选择图片",
+  "maxImageSize": "最大 700KB",
+  "changeImage": "更换",
+  "imageTooLarge": "图片太大。压缩后最大700KB。",
+  "selectImage": "请选择景点图片",
+
+  "detailDescription": "描述",
+  "detailProvince": "省份",
+  "detailCity": "城市",
+  "detailRating": "评分",
+  "deleteConfirm": "您确定要删除 \"{name}\" 吗？此操作无法撤消。",
+  "delete": "删除",
+
+  "language": "语言",
+  "languageIndonesian": "Indonesia",
+  "languageEnglish": "English",
+  "languageThai": "ไทย",
+  "languageKorean": "한국어",
+  "languageChinese": "中文"
+}

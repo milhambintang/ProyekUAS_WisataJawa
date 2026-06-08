@@ -6,6 +6,8 @@ import 'package:wisata_jawa/services/firestore_service.dart';
 import 'package:wisata_jawa/widgets/wisata_card.dart';
 import 'package:wisata_jawa/screens/wisata_detail_screen.dart';
 import 'package:wisata_jawa/screens/add_wisata_screen.dart';
+import '../l10n/app_localizations.dart'; // l10n
+import '../main.dart'; // l10n - untuk MainApp.setLocale()
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -21,12 +23,6 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
 
   late AnimationController _animController;
   late Animation<double> _fadeAnimation;
-
-  // Daftar provinsi dengan "Semua" di awal
-  final List<String> _provinsiTabs = [
-    'Semua',
-    ...FirestoreService.provinsiList,
-  ];
 
   // Ikon untuk setiap provinsi tab
   final List<IconData> _provinsiIcons = [
@@ -59,7 +55,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
+  void dispose() { //
     _favoriteSub?.cancel();
     _animController.dispose();
     super.dispose();
@@ -85,24 +81,38 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     }
   }
 
+  // Daftar provinsi tabs (pertama = "Semua" / terlokalisasi)
+  List<String> _getProvinsiTabs(AppLocalizations l10n) {
+    return [
+      l10n.allProvinces,
+      ...FirestoreService.provinsiList,
+    ];
+  }
+
   Stream<List<Wisata>> _getWisataStream() {
     if (_selectedProvinsiIndex == 0) {
       return _firestoreService.getSemuaWisata();
     }
+    final provinsiTabs = [
+      'Semua', // placeholder, index 0 sudah dihandle di atas
+      ...FirestoreService.provinsiList,
+    ];
     return _firestoreService
-        .getWisataByProvinsi(_provinsiTabs[_selectedProvinsiIndex]);
+        .getWisataByProvinsi(provinsiTabs[_selectedProvinsiIndex]);
   }
 
-  String _getGreeting() {
+  String _getGreeting(AppLocalizations l10n) {
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Selamat Pagi';
-    if (hour < 15) return 'Selamat Siang';
-    if (hour < 18) return 'Selamat Sore';
-    return 'Selamat Malam';
+    if (hour < 12) return l10n.greetingMorning;
+    if (hour < 15) return l10n.greetingAfternoon;
+    if (hour < 18) return l10n.greetingEvening;
+    return l10n.greetingNight;
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAF8),
       body: FadeTransition(
@@ -110,10 +120,10 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
         child: Column(
           children: [
             // Header with gradient & greeting
-            _buildHeader(context),
+            _buildHeader(context, l10n),
 
             // Provinsi tabs
-            _buildProvinsiTabs(),
+            _buildProvinsiTabs(l10n),
 
             // Wisata grid
             Expanded(
@@ -140,7 +150,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Memuat wisata...',
+                            l10n.loadingWisata, // l10n
                             style: TextStyle(
                               color: Colors.grey.shade500,
                               fontSize: 13,
@@ -169,9 +179,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                                   size: 32, color: Color(0xFFFF9800)),
                             ),
                             const SizedBox(height: 16),
-                            const Text(
-                              'Oops! Terjadi Kesalahan',
-                              style: TextStyle(
+                            Text(
+                              l10n.errorOccurred, // l10n
+                              style: const TextStyle(
                                 color: Color(0xFF1A1A1A),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -179,7 +189,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Pastikan koneksi internet kamu stabil',
+                              l10n.errorConnection, // l10n
                               style: TextStyle(
                                 color: Colors.grey.shade500,
                                 fontSize: 13,
@@ -212,9 +222,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          const Text(
-                            'Belum Ada Wisata',
-                            style: TextStyle(
+                          Text(
+                            l10n.emptyWisata, // l10n
+                            style: const TextStyle(
                               color: Color(0xFF1A1A1A),
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
@@ -222,7 +232,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Yuk, jadi yang pertama menambahkan wisata!',
+                            l10n.emptyWisataHint, // l10n
                             style: TextStyle(
                               color: Colors.grey.shade500,
                               fontSize: 13,
@@ -238,7 +248,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                               );
                             },
                             icon: const Icon(Icons.add_rounded, size: 20),
-                            label: const Text('Tambah Wisata'),
+                            label: Text(l10n.addWisata), // l10n
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF2E7D32),
                               foregroundColor: Colors.white,
@@ -323,7 +333,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
+    final currentLocale = Localizations.localeOf(context).languageCode; // l10n
+
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 12,
@@ -355,7 +367,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${_getGreeting()} 👋',
+                      '${_getGreeting(l10n)} 👋', // l10n
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.85),
                         fontSize: 14,
@@ -363,9 +375,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
-                      'Wisata Pulau Jawa',
-                      style: TextStyle(
+                    Text(
+                      l10n.headerTitle, // l10n
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
@@ -375,28 +387,42 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                   ],
                 ),
               ),
-              // Decorative icon
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.2),
+              // Language selector button
+              PopupMenuButton<String>(
+                icon: Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.language_rounded,
+                    color: Colors.white,
+                    size: 24,
                   ),
                 ),
-                child: const Icon(
-                  Icons.explore_rounded,
-                  color: Colors.white,
-                  size: 24,
+                tooltip: l10n.language, // l10n
+                onSelected: (code) => MainApp.setLocale(Locale(code)), // l10n
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                itemBuilder: (context) => [
+                  _buildLanguageMenuItem('id', l10n.languageIndonesian, '🇮🇩', currentLocale),
+                  _buildLanguageMenuItem('en', l10n.languageEnglish, '🇬🇧', currentLocale),
+                  _buildLanguageMenuItem('th', l10n.languageThai, '🇹🇭', currentLocale),
+                  _buildLanguageMenuItem('ko', l10n.languageKorean, '🇰🇷', currentLocale),
+                  _buildLanguageMenuItem('zh', l10n.languageChinese, '🇨🇳', currentLocale),
+                ],
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            'Temukan destinasi wisata terbaik di Pulau Jawa',
+            l10n.headerSubtitle, // l10n
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.7),
               fontSize: 12,
@@ -407,7 +433,28 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildProvinsiTabs() {
+  PopupMenuItem<String> _buildLanguageMenuItem(
+      String code, String label, String flag, String currentLocale) {
+    return PopupMenuItem(
+      value: code,
+      child: Row(
+        children: [
+          if (currentLocale == code)
+            const Icon(Icons.check, size: 18, color: Color(0xFF2E7D32))
+          else
+            const SizedBox(width: 18),
+          const SizedBox(width: 8),
+          Text(flag, style: const TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Text(label),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProvinsiTabs(AppLocalizations l10n) {
+    final provinsiTabs = _getProvinsiTabs(l10n);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -423,7 +470,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
-          children: List.generate(_provinsiTabs.length, (index) {
+          children: List.generate(provinsiTabs.length, (index) {
             final isSelected = _selectedProvinsiIndex == index;
             return Padding(
               padding: const EdgeInsets.only(right: 8),
@@ -472,7 +519,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          _provinsiTabs[index],
+                          provinsiTabs[index],
                           style: TextStyle(
                             color: isSelected
                                 ? Colors.white

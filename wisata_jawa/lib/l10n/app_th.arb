@@ -1,0 +1,115 @@
+{
+  "@@locale": "th",
+
+  "appTitle": "ท่องเที่ยวชวา",
+  "appTagline": "✨ สำรวจความงามของเกาะชวา",
+  "appSubtitle": "แนะนำสถานที่ท่องเที่ยวที่ดีที่สุด",
+
+  "greetingMorning": "สวัสดีตอนเช้า",
+  "greetingAfternoon": "สวัสดีตอนบ่าย",
+  "greetingEvening": "สวัสดีตอนเย็น",
+  "greetingNight": "สวัสดีตอนกลางคืน",
+
+  "headerTitle": "ท่องเที่ยวเกาะชวา",
+  "headerSubtitle": "ค้นพบจุดหมายปลายทางที่ดีที่สุดในเกาะชวา",
+
+  "allProvinces": "ทั้งหมด",
+
+  "navHome": "หน้าแรก",
+  "navSearch": "ค้นหา",
+  "navFavorites": "รายการโปรด",
+  "navProfile": "โปรไฟล์",
+
+  "loadingWisata": "กำลังโหลด...",
+  "loadingFavorites": "กำลังโหลดรายการโปรด...",
+  "searchingWisata": "กำลังค้นหา...",
+
+  "errorOccurred": "อุ๊ปส์! เกิดข้อผิดพลาด",
+  "errorConnection": "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
+  "errorGeneral": "เกิดข้อผิดพลาด",
+
+  "emptyWisata": "ยังไม่มีสถานที่ท่องเที่ยว",
+  "emptyWisataHint": "เป็นคนแรกที่เพิ่มสถานที่ท่องเที่ยว!",
+  "emptyFavorites": "ยังไม่มีรายการโปรด",
+  "emptyFavoritesHint": "แตะ ♥ ที่สถานที่ท่องเที่ยวเพื่อเพิ่มในรายการโปรด",
+
+  "addWisata": "เพิ่มสถานที่ท่องเที่ยว",
+  "editWisata": "แก้ไขสถานที่ท่องเที่ยว",
+  "deleteWisata": "ลบสถานที่ท่องเที่ยว",
+
+  "wisataAdded": "เพิ่มสถานที่ท่องเที่ยวสำเร็จ",
+  "wisataUpdated": "อัปเดตสถานที่ท่องเที่ยวสำเร็จ",
+  "wisataDeleted": "ลบสถานที่ท่องเที่ยวสำเร็จ",
+  "wisataFailed": "ล้มเหลว: {error}",
+
+  "searchTitle": "ค้นหาสถานที่ท่องเที่ยว",
+  "searchSubtitle": "ค้นหาจุดหมายในฝันของคุณ",
+  "searchHint": "ค้นหาชื่อ เมือง หรือจังหวัด...",
+  "searchFavorite": "ค้นหาสถานที่โปรดของคุณ",
+  "searchFavoriteHint": "พิมพ์ชื่อสถานที่ เมือง หรือจังหวัด",
+  "searchNotFound": "ไม่พบสถานที่ท่องเที่ยว",
+  "searchNotFoundHint": "ลองใช้คำค้นอื่น",
+  "searchResultCount": "พบ {count} สถานที่",
+
+  "favoritesTitle": "สถานที่โปรด",
+  "favoritesSubtitle": "คอลเลกชันสถานที่ที่คุณชอบ",
+  "favoritesCount": "{count} สถานที่โปรด",
+
+  "loginRequired": "กรุณาเข้าสู่ระบบก่อน",
+  "welcome": "ยินดีต้อนรับ",
+  "loginSubtitle": "เข้าสู่ระบบเพื่อสำรวจสถานที่ท่องเที่ยวเกาะชวา",
+  "emailLabel": "อีเมล",
+  "passwordLabel": "รหัสผ่าน",
+  "confirmPasswordLabel": "ยืนยันรหัสผ่าน",
+  "loginButton": "เข้าสู่ระบบ",
+  "registerButton": "สมัครสมาชิก",
+  "noAccount": "ยังไม่มีบัญชี? ",
+  "registerLink": "สมัครสมาชิก",
+  "hasAccount": "มีบัญชีแล้ว? ",
+  "loginLink": "เข้าสู่ระบบ",
+  "createAccount": "สร้างบัญชีใหม่",
+  "registerSubtitle": "เข้าร่วมและค้นพบสถานที่ท่องเที่ยวเกาะชวา",
+  "passwordMismatch": "รหัสผ่านไม่ตรงกัน",
+
+  "profileMemberSince": "สมาชิกตั้งแต่ {date}",
+  "profileWisataLabel": "สถานที่",
+  "profileFavoriteLabel": "รายการโปรด",
+  "profileWisataAdded": "สถานที่ที่คุณเพิ่ม",
+  "profileNoWisata": "ยังไม่มีสถานที่",
+  "profileNoWisataHint": "สถานที่ที่คุณเพิ่มจะปรากฏที่นี่",
+
+  "logout": "ออกจากระบบ",
+  "logoutSubtitle": "ออกจากบัญชีของคุณ",
+  "logoutConfirm": "คุณแน่ใจหรือไม่ว่าต้องการออกจากบัญชีนี้?",
+  "cancel": "ยกเลิก",
+
+  "wisataNameLabel": "ชื่อสถานที่ท่องเที่ยว",
+  "wisataNameRequired": "กรุณากรอกชื่อสถานที่",
+  "provinceLabel": "จังหวัด",
+  "cityLabel": "เมือง/อำเภอ",
+  "cityRequired": "กรุณากรอกชื่อเมือง",
+  "descriptionLabel": "คำอธิบาย",
+  "descriptionRequired": "กรุณากรอกคำอธิบาย",
+  "ratingLabel": "คะแนน: {value}",
+  "updateWisata": "อัปเดตสถานที่",
+
+  "tapToPickImage": "แตะเพื่อเลือกรูปภาพ",
+  "maxImageSize": "สูงสุด 700KB",
+  "changeImage": "เปลี่ยน",
+  "imageTooLarge": "รูปภาพใหญ่เกินไป สูงสุด 700KB หลังบีบอัด",
+  "selectImage": "กรุณาเลือกรูปภาพสถานที่ท่องเที่ยว",
+
+  "detailDescription": "คำอธิบาย",
+  "detailProvince": "จังหวัด",
+  "detailCity": "เมือง",
+  "detailRating": "คะแนน",
+  "deleteConfirm": "คุณแน่ใจหรือไม่ว่าต้องการลบ \"{name}\"? การกระทำนี้ไม่สามารถยกเลิกได้",
+  "delete": "ลบ",
+
+  "language": "ภาษา",
+  "languageIndonesian": "Indonesia",
+  "languageEnglish": "English",
+  "languageThai": "ไทย",
+  "languageKorean": "한국어",
+  "languageChinese": "中文"
+}

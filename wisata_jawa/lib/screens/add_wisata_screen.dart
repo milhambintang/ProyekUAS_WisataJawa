@@ -5,32 +5,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wisata_jawa/models/wisata.dart';
 import 'package:wisata_jawa/services/firestore_service.dart';
+import '../l10n/app_localizations.dart'; // l10n
 
-class AddWisataScreen extends StatefulWidget {
+class AddWisataScreen extends StatefulWidget { // Bisa untuk tambah baru (wisata = null) atau edit (wisata != null)
   final Wisata? wisata; // null = tambah baru, non-null = edit
 
-  const AddWisataScreen({super.key, this.wisata}); // Parameter opsional untuk edit wisata
+  const AddWisataScreen({super.key, this.wisata});
 
   @override
-  State<AddWisataScreen> createState() => _AddWisataScreenState(); // Membuat state untuk AddWisataScreen
+  State<AddWisataScreen> createState() => _AddWisataScreenState();
 }
 
-class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk AddWisataScreen
+class _AddWisataScreenState extends State<AddWisataScreen> {
   final _formKey = GlobalKey<FormState>();
   final FirestoreService _firestoreService = FirestoreService();
   final String? _userId = FirebaseAuth.instance.currentUser?.uid;
 
-  late TextEditingController _namaController; // Controller untuk input nama wisata
+  late TextEditingController _namaController;
   late TextEditingController _deskripsiController;
   late TextEditingController _kotaController;
 
-  String _selectedProvinsi = FirestoreService.provinsiList.first; // Default provinsi pertama dari daftar
+  String _selectedProvinsi = FirestoreService.provinsiList.first;
   double _rating = 4.0;
   String _base64Image = '';
   Uint8List? _imagePreview;
   bool _isLoading = false;
 
-  bool get _isEditing => widget.wisata != null; // Menentukan apakah sedang dalam mode edit atau tambah baru
+  bool get _isEditing => widget.wisata != null;
 
   @override
   void initState() {
@@ -66,20 +67,19 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
       source: ImageSource.gallery,
       maxWidth: 800,
       maxHeight: 600,
-      imageQuality: 60, // Kompresi untuk meminimalkan ukuran Base64
+      imageQuality: 60,
     );
 
     if (picked == null) return;
 
     final bytes = await picked.readAsBytes();
 
-    // Check ukuran (max 700KB setelah kompresi, ~950KB Base64)
     if (bytes.length > 700 * 1024) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!; // l10n
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                'Gambar terlalu besar. Maksimal 700KB setelah kompresi.'),
+          SnackBar(
+            content: Text(l10n.imageTooLarge), // l10n
             backgroundColor: Colors.red,
           ),
         );
@@ -95,11 +95,12 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
+    final l10n = AppLocalizations.of(context)!; // l10n
 
     if (_base64Image.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Silakan pilih gambar wisata'),
+      ScaffoldMessenger.of(context).showSnackBar( 
+        SnackBar(
+          content: Text(l10n.selectImage), // l10n
           backgroundColor: Colors.red,
         ),
       );
@@ -107,7 +108,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
     }
 
     setState(() {
-      _isLoading = true;
+      _isLoading = true; 
     });
 
     try {
@@ -134,17 +135,18 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(_isEditing
-                ? 'Wisata berhasil diperbarui'
-                : 'Wisata berhasil ditambahkan'),
+                ? l10n.wisataUpdated // l10n
+                : l10n.wisataAdded), // l10n
             backgroundColor: const Color(0xFF2E7D32),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!; // l10n
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Gagal: ${e.toString()}'),
+            content: Text(l10n.wisataFailed(e.toString())), // l10n
             backgroundColor: Colors.red,
           ),
         );
@@ -192,13 +194,14 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7F5),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1B5E20),
         foregroundColor: Colors.white,
         title: Text(
-          _isEditing ? 'Edit Wisata' : 'Tambah Wisata',
+          _isEditing ? l10n.editWisata : l10n.addWisata, // l10n
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         elevation: 0,
@@ -253,15 +256,15 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                                       Colors.black.withValues(alpha: 0.5),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Row(
+                                child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.edit,
+                                    const Icon(Icons.edit,
                                         color: Colors.white, size: 14),
-                                    SizedBox(width: 4),
+                                    const SizedBox(width: 4),
                                     Text(
-                                      'Ganti',
-                                      style: TextStyle(
+                                      l10n.changeImage, // l10n
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
                                       ),
@@ -279,7 +282,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                                 size: 48, color: Colors.grey.shade400),
                             const SizedBox(height: 8),
                             Text(
-                              'Tap untuk pilih gambar',
+                              l10n.tapToPickImage, // l10n
                               style: TextStyle(
                                 color: Colors.grey.shade500,
                                 fontSize: 14,
@@ -287,7 +290,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Maksimal 700KB',
+                              l10n.maxImageSize, // l10n
                               style: TextStyle(
                                 color: Colors.grey.shade400,
                                 fontSize: 11,
@@ -321,10 +324,10 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                       style: const TextStyle(
                           fontSize: 15, color: Color(0xFF2D2D2D)),
                       decoration: _inputDecoration(
-                          'Nama Wisata', Icons.place_outlined),
+                          l10n.wisataNameLabel, Icons.place_outlined), // l10n
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Nama wisata wajib diisi';
+                          return l10n.wisataNameRequired; // l10n
                         }
                         return null;
                       },
@@ -335,7 +338,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                     DropdownButtonFormField<String>(
                       value: _selectedProvinsi,
                       decoration:
-                          _inputDecoration('Provinsi', Icons.map_outlined),
+                          _inputDecoration(l10n.provinceLabel, Icons.map_outlined), // l10n
                       items: FirestoreService.provinsiList.map((p) {
                         return DropdownMenuItem(value: p, child: Text(p));
                       }).toList(),
@@ -355,10 +358,10 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                       style: const TextStyle(
                           fontSize: 15, color: Color(0xFF2D2D2D)),
                       decoration: _inputDecoration(
-                          'Kota/Kabupaten', Icons.location_city_outlined),
+                          l10n.cityLabel, Icons.location_city_outlined), // l10n
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Kota wajib diisi';
+                          return l10n.cityRequired; // l10n
                         }
                         return null;
                       },
@@ -372,7 +375,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                           fontSize: 15, color: Color(0xFF2D2D2D)),
                       maxLines: 5,
                       decoration: InputDecoration(
-                        labelText: 'Deskripsi',
+                        labelText: l10n.descriptionLabel, // l10n
                         labelStyle:
                             TextStyle(color: Colors.grey.shade500, fontSize: 14),
                         alignLabelWithHint: true,
@@ -401,7 +404,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Deskripsi wajib diisi';
+                          return l10n.descriptionRequired; // l10n
                         }
                         return null;
                       },
@@ -414,11 +417,11 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.star_rounded,
+                            const Icon(Icons.star_rounded,
                                 color: Colors.amber, size: 20),
                             const SizedBox(width: 8),
                             Text(
-                              'Rating: ${_rating.toStringAsFixed(1)}',
+                              l10n.ratingLabel(_rating.toStringAsFixed(1)), // l10n
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -487,7 +490,7 @@ class _AddWisataScreenState extends State<AddWisataScreen> {  // State untuk Add
                           ),
                         )
                       : Text(
-                          _isEditing ? 'Perbarui Wisata' : 'Tambah Wisata',
+                          _isEditing ? l10n.updateWisata : l10n.addWisata, // l10n
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

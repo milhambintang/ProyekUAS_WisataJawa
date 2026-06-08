@@ -1,0 +1,115 @@
+{
+  "@@locale": "id",
+
+  "appTitle": "Wisata Jawa",
+  "appTagline": "✨ Jelajahi Keindahan Pulau Jawa",
+  "appSubtitle": "Rekomendasi Wisata Terbaik",
+
+  "greetingMorning": "Selamat Pagi",
+  "greetingAfternoon": "Selamat Siang",
+  "greetingEvening": "Selamat Sore",
+  "greetingNight": "Selamat Malam",
+
+  "headerTitle": "Wisata Pulau Jawa",
+  "headerSubtitle": "Temukan destinasi wisata terbaik di Pulau Jawa",
+
+  "allProvinces": "Semua",
+
+  "navHome": "Home",
+  "navSearch": "Cari",
+  "navFavorites": "Favorit",
+  "navProfile": "Profil",
+
+  "loadingWisata": "Memuat wisata...",
+  "loadingFavorites": "Memuat favorit...",
+  "searchingWisata": "Mencari wisata...",
+
+  "errorOccurred": "Oops! Terjadi Kesalahan",
+  "errorConnection": "Pastikan koneksi internet kamu stabil",
+  "errorGeneral": "Terjadi kesalahan",
+
+  "emptyWisata": "Belum Ada Wisata",
+  "emptyWisataHint": "Yuk, jadi yang pertama menambahkan wisata!",
+  "emptyFavorites": "Belum Ada Favorit",
+  "emptyFavoritesHint": "Tap ♥ pada wisata untuk menambahkan ke favorit",
+
+  "addWisata": "Tambah Wisata",
+  "editWisata": "Edit Wisata",
+  "deleteWisata": "Hapus Wisata",
+
+  "wisataAdded": "Wisata berhasil ditambahkan",
+  "wisataUpdated": "Wisata berhasil diperbarui",
+  "wisataDeleted": "Wisata berhasil dihapus",
+  "wisataFailed": "Gagal: {error}",
+
+  "searchTitle": "Cari Wisata",
+  "searchSubtitle": "Temukan destinasi impianmu",
+  "searchHint": "Cari nama wisata, kota, atau provinsi...",
+  "searchFavorite": "Cari Wisata Favoritmu",
+  "searchFavoriteHint": "Ketik nama wisata, kota, atau provinsi",
+  "searchNotFound": "Wisata Tidak Ditemukan",
+  "searchNotFoundHint": "Coba kata kunci lain",
+  "searchResultCount": "{count} wisata ditemukan",
+
+  "favoritesTitle": "Wisata Favorit",
+  "favoritesSubtitle": "Koleksi wisata yang kamu sukai",
+  "favoritesCount": "{count} wisata favorit",
+
+  "loginRequired": "Silakan login terlebih dahulu",
+  "welcome": "Selamat Datang",
+  "loginSubtitle": "Masuk untuk menjelajahi wisata Pulau Jawa",
+  "emailLabel": "Email",
+  "passwordLabel": "Kata Sandi",
+  "confirmPasswordLabel": "Konfirmasi Kata Sandi",
+  "loginButton": "Masuk",
+  "registerButton": "Daftar",
+  "noAccount": "Belum punya akun? ",
+  "registerLink": "Daftar",
+  "hasAccount": "Sudah punya akun? ",
+  "loginLink": "Masuk",
+  "createAccount": "Buat Akun Baru",
+  "registerSubtitle": "Bergabung dan temukan wisata Pulau Jawa",
+  "passwordMismatch": "Kata sandi tidak cocok",
+
+  "profileMemberSince": "Member sejak {date}",
+  "profileWisataLabel": "Wisata",
+  "profileFavoriteLabel": "Favorit",
+  "profileWisataAdded": "Wisata yang Kamu Tambahkan",
+  "profileNoWisata": "Belum ada wisata",
+  "profileNoWisataHint": "Wisata yang kamu tambahkan akan muncul di sini",
+
+  "logout": "Keluar",
+  "logoutSubtitle": "Keluar dari akun kamu",
+  "logoutConfirm": "Apakah kamu yakin ingin keluar dari akun ini?",
+  "cancel": "Batal",
+
+  "wisataNameLabel": "Nama Wisata",
+  "wisataNameRequired": "Nama wisata wajib diisi",
+  "provinceLabel": "Provinsi",
+  "cityLabel": "Kota/Kabupaten",
+  "cityRequired": "Kota wajib diisi",
+  "descriptionLabel": "Deskripsi",
+  "descriptionRequired": "Deskripsi wajib diisi",
+  "ratingLabel": "Rating: {value}",
+  "updateWisata": "Perbarui Wisata",
+
+  "tapToPickImage": "Tap untuk pilih gambar",
+  "maxImageSize": "Maksimal 700KB",
+  "changeImage": "Ganti",
+  "imageTooLarge": "Gambar terlalu besar. Maksimal 700KB setelah kompresi.",
+  "selectImage": "Silakan pilih gambar wisata",
+
+  "detailDescription": "Deskripsi",
+  "detailProvince": "Provinsi",
+  "detailCity": "Kota",
+  "detailRating": "Rating",
+  "deleteConfirm": "Apakah kamu yakin ingin menghapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "delete": "Hapus",
+
+  "language": "Bahasa",
+  "languageIndonesian": "Indonesia",
+  "languageEnglish": "English",
+  "languageThai": "ไทย",
+  "languageKorean": "한국어",
+  "languageChinese": "中文"
+}

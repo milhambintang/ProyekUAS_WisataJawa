@@ -5,6 +5,8 @@ import 'package:wisata_jawa/services/firestore_service.dart';
 import 'package:wisata_jawa/services/auth_service.dart';
 import 'package:wisata_jawa/screens/login_screen.dart';
 import 'package:wisata_jawa/screens/wisata_detail_screen.dart';
+import 'package:wisata_jawa/l10n/app_localizations.dart'; // l10n
+import 'package:wisata_jawa/main.dart'; // l10n - untuk MainApp.setLocale()
 import 'dart:convert';
 
 class ProfileTab extends StatefulWidget {
@@ -19,17 +21,152 @@ class _ProfileTabState extends State<ProfileTab> {
   final FirestoreService _firestoreService = FirestoreService();
   final User? _user = FirebaseAuth.instance.currentUser;
 
+  // Data bahasa yang tersedia: [locale, label, flag emoji]
+  static const List<_LangOption> _languages = [
+    _LangOption('id', 'Indonesia', '🇮🇩'),
+    _LangOption('en', 'English', '🇬🇧'),
+    _LangOption('th', 'ไทย', '🇹🇭'),
+    _LangOption('ko', '한국어', '🇰🇷'),
+    _LangOption('zh', '中文', '🇨🇳'),
+  ];
+
+  // Locale aktif saat ini
+  String _currentLocale = 'id';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Sinkronkan _currentLocale dengan locale aktif dari context
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_currentLocale != locale) {
+      _currentLocale = locale;
+    }
+  }
+
+  void _changeLanguage(String langCode) {
+    setState(() => _currentLocale = langCode);
+    MainApp.setLocale(Locale(langCode));
+    Navigator.pop(context); // tutup bottom sheet
+  }
+
+  void _showLanguageSheet() {
+    final l10n = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle bar
+              const SizedBox(height: 12),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Judul
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE8F5E9),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.language_rounded,
+                          size: 20, color: Color(0xFF2E7D32)),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      l10n.language, // l10n
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF1A1A1A),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Divider(color: Colors.grey.shade100, height: 1),
+              // Daftar bahasa
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _languages.length,
+                separatorBuilder: (_, __) =>
+                    Divider(color: Colors.grey.shade100, height: 1),
+                itemBuilder: (_, i) {
+                  final lang = _languages[i];
+                  final isSelected = lang.code == _currentLocale;
+                  return ListTile(
+                    onTap: () => _changeLanguage(lang.code),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 4),
+                    leading: Text(lang.flag,
+                        style: const TextStyle(fontSize: 28)),
+                    title: Text(
+                      lang.label,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: isSelected
+                            ? FontWeight.w700
+                            : FontWeight.w500,
+                        color: isSelected
+                            ? const Color(0xFF2E7D32)
+                            : const Color(0xFF2D2D2D),
+                      ),
+                    ),
+                    trailing: isSelected
+                        ? Container(
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2E7D32),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.check_rounded,
+                                color: Colors.white, size: 16),
+                          )
+                        : null,
+                  );
+                },
+              ),
+              SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
+
     if (_user == null) {
-      return const Center(child: Text('Silakan login terlebih dahulu'));
+      return Center(child: Text(l10n.loginRequired)); // l10n
     }
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAF8),
       body: Column(
         children: [
-          // Header with profile info
+          // ── Header dengan info profil ─────────────────────────────────
           Container(
             width: double.infinity,
             padding: EdgeInsets.only(
@@ -40,7 +177,11 @@ class _ProfileTabState extends State<ProfileTab> {
             ),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF1B5E20), Color(0xFF2E7D32), Color(0xFF388E3C)],
+                colors: [
+                  Color(0xFF1B5E20),
+                  Color(0xFF2E7D32),
+                  Color(0xFF388E3C)
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -54,7 +195,7 @@ class _ProfileTabState extends State<ProfileTab> {
             ),
             child: Column(
               children: [
-                // Avatar with glow
+                // Avatar
                 Container(
                   width: 80,
                   height: 80,
@@ -78,16 +219,14 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     ],
                   ),
-                  child: const Icon(
-                    Icons.person_rounded,
-                    size: 40,
-                    color: Colors.white,
-                  ),
+                  child: const Icon(Icons.person_rounded,
+                      size: 40, color: Colors.white),
                 ),
                 const SizedBox(height: 14),
+
                 // Email
                 Text(
-                  _user!.email ?? 'No email',
+                  _user!.email ?? '-',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 17,
@@ -96,15 +235,19 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                 ),
                 const SizedBox(height: 4),
+
+                // Member since
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    'Member sejak ${_formatDate(_user!.metadata.creationTime)}',
+                    l10n.profileMemberSince( // l10n
+                      _formatDate(_user!.metadata.creationTime),
+                    ),
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 11,
@@ -118,27 +261,25 @@ class _ProfileTabState extends State<ProfileTab> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Jumlah wisata ditambahkan
                     StreamBuilder<List<Wisata>>(
                       stream: _firestoreService.getWisataByUser(_user!.uid),
                       builder: (context, snapshot) {
                         final count = snapshot.data?.length ?? 0;
                         return _buildStatItem(
                           count.toString(),
-                          'Wisata',
+                          l10n.profileWisataLabel, // l10n
                           Icons.add_location_alt_rounded,
                         );
                       },
                     ),
                     const SizedBox(width: 16),
-                    // Jumlah favorit
                     StreamBuilder<List<String>>(
                       stream: _firestoreService.getFavoriteIds(_user!.uid),
                       builder: (context, snapshot) {
                         final count = snapshot.data?.length ?? 0;
                         return _buildStatItem(
                           count.toString(),
-                          'Favorit',
+                          l10n.profileFavoriteLabel, // l10n
                           Icons.favorite_rounded,
                         );
                       },
@@ -149,13 +290,14 @@ class _ProfileTabState extends State<ProfileTab> {
             ),
           ),
 
+          // ── Body ─────────────────────────────────────────────────────
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Logout button card
+                  // ── Menu cards ──────────────────────────────────────
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -168,62 +310,66 @@ class _ProfileTabState extends State<ProfileTab> {
                         ),
                       ],
                     ),
-                    child: Material(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(18),
-                      child: InkWell(
-                        onTap: () => _showLogoutDialog(context),
-                        borderRadius: BorderRadius.circular(18),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 16),
-                          child: Row(
+                    child: Column(
+                      children: [
+                        // Ganti Bahasa
+                        _buildMenuTile(
+                          icon: Icons.language_rounded,
+                          iconBgColor: const Color(0xFFE3F2FD),
+                          iconColor: const Color(0xFF1565C0),
+                          title: l10n.language, // l10n
+                          subtitle: _languages
+                              .firstWhere(
+                                (l) => l.code == _currentLocale,
+                                orElse: () => _languages.first,
+                              )
+                              .label,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFFFEBEE),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Icon(Icons.logout_rounded,
-                                    color: Color(0xFFE53935), size: 20),
+                              Text(
+                                _languages
+                                    .firstWhere(
+                                      (l) => l.code == _currentLocale,
+                                      orElse: () => _languages.first,
+                                    )
+                                    .flag,
+                                style: const TextStyle(fontSize: 20),
                               ),
-                              const SizedBox(width: 14),
-                              const Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Keluar',
-                                      style: TextStyle(
-                                        color: Color(0xFFE53935),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    SizedBox(height: 2),
-                                    Text(
-                                      'Keluar dari akun kamu',
-                                      style: TextStyle(
-                                        color: Color(0xFFEF9A9A),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              const SizedBox(width: 6),
                               Icon(Icons.chevron_right_rounded,
                                   color: Colors.grey.shade300),
                             ],
                           ),
+                          onTap: _showLanguageSheet,
+                          isLast: false,
                         ),
-                      ),
+
+                        Divider(
+                            color: Colors.grey.shade100,
+                            height: 1,
+                            indent: 68),
+
+                        // Logout
+                        _buildMenuTile(
+                          icon: Icons.logout_rounded,
+                          iconBgColor: const Color(0xFFFFEBEE),
+                          iconColor: const Color(0xFFE53935),
+                          title: l10n.logout, // l10n
+                          subtitle: l10n.logoutSubtitle, // l10n
+                          titleColor: const Color(0xFFE53935),
+                          subtitleColor: const Color(0xFFEF9A9A),
+                          trailing: Icon(Icons.chevron_right_rounded,
+                              color: Colors.grey.shade300),
+                          onTap: () => _showLogoutDialog(context),
+                          isLast: true,
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 24),
 
-                  // Wisata yang ditambahkan user
+                  // ── Section header: Wisata ditambahkan ──────────────
                   Row(
                     children: [
                       Container(
@@ -240,7 +386,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        'Wisata yang Kamu Tambahkan',
+                        l10n.profileWisataAdded, // l10n
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -252,10 +398,12 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                   const SizedBox(height: 14),
 
+                  // ── Daftar wisata user ──────────────────────────────
                   StreamBuilder<List<Wisata>>(
                     stream: _firestoreService.getWisataByUser(_user!.uid),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return Container(
                           height: 100,
                           alignment: Alignment.center,
@@ -275,9 +423,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(18),
-                            border: Border.all(
-                              color: Colors.grey.shade100,
-                            ),
+                            border: Border.all(color: Colors.grey.shade100),
                           ),
                           child: Column(
                             children: [
@@ -296,7 +442,7 @@ class _ProfileTabState extends State<ProfileTab> {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                'Belum ada wisata',
+                                l10n.profileNoWisata, // l10n
                                 style: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontSize: 14,
@@ -305,7 +451,7 @@ class _ProfileTabState extends State<ProfileTab> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Wisata yang kamu tambahkan akan muncul di sini',
+                                l10n.profileNoWisataHint, // l10n
                                 style: TextStyle(
                                   color: Colors.grey.shade400,
                                   fontSize: 12,
@@ -319,7 +465,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
                       return Column(
                         children: wisataList
-                            .map((wisata) => _buildWisataListItem(wisata))
+                            .map((w) => _buildWisataListItem(w))
                             .toList(),
                       );
                     },
@@ -334,15 +480,83 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
+  // ── Helper: Menu tile ─────────────────────────────────────────────────
+  Widget _buildMenuTile({
+    required IconData icon,
+    required Color iconBgColor,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    Color? titleColor,
+    Color? subtitleColor,
+    required Widget trailing,
+    required VoidCallback onTap,
+    required bool isLast,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      borderRadius: isLast
+          ? const BorderRadius.vertical(bottom: Radius.circular(18))
+          : BorderRadius.zero,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: isLast
+            ? const BorderRadius.vertical(bottom: Radius.circular(18))
+            : BorderRadius.zero,
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: iconBgColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: iconColor, size: 20),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: titleColor ?? const Color(0xFF1A1A1A),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        color: subtitleColor ?? Colors.grey.shade500,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              trailing,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── Helper: Stat item ─────────────────────────────────────────────────
   Widget _buildStatItem(String value, String label, IconData icon) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.15),
-        ),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
       ),
       child: Column(
         children: [
@@ -371,6 +585,7 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
+  // ── Helper: Wisata list item ───────────────────────────────────────────
   Widget _buildWisataListItem(Wisata wisata) {
     return GestureDetector(
       onTap: () {
@@ -406,31 +621,13 @@ class _ProfileTabState extends State<ProfileTab> {
                     ? Image.memory(
                         base64Decode(wisata.gambar),
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFFE8F5E9),
-                                Color(0xFFC8E6C9)
-                              ],
-                            ),
-                          ),
-                          child:
-                              const Icon(Icons.image, color: Colors.grey),
-                        ),
+                        errorBuilder: (_, __, ___) => _thumbPlaceholder(),
                       )
-                    : Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFE8F5E9), Color(0xFFC8E6C9)],
-                          ),
-                        ),
-                        child:
-                            const Icon(Icons.image, color: Colors.grey),
-                      ),
+                    : _thumbPlaceholder(),
               ),
             ),
             const SizedBox(width: 14),
+
             // Info
             Expanded(
               child: Column(
@@ -477,7 +674,8 @@ class _ProfileTabState extends State<ProfileTab> {
                 ],
               ),
             ),
-            // Rating
+
+            // Rating badge
             Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -510,20 +708,62 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
+  Widget _thumbPlaceholder() {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFE8F5E9), Color(0xFFC8E6C9)],
+        ),
+      ),
+      child: const Icon(Icons.image, color: Colors.grey),
+    );
+  }
+
+  // ── Helper: Format tanggal ─────────────────────────────────────────────
   String _formatDate(DateTime? date) {
     if (date == null) return '-';
-    final months = [
+    final locale = Localizations.localeOf(context).languageCode;
+    // Nama bulan sesuai bahasa aktif
+    const monthsId = [
       'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
       'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
     ];
+    const monthsEn = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    const monthsTh = [
+      'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+      'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+    ];
+    const monthsKo = [
+      '1월', '2월', '3월', '4월', '5월', '6월',
+      '7월', '8월', '9월', '10월', '11월', '12월'
+    ];
+    const monthsZh = [
+      '1月', '2月', '3月', '4月', '5月', '6月',
+      '7月', '8月', '9月', '10月', '11月', '12月'
+    ];
+
+    final months = switch (locale) {
+      'th' => monthsTh,
+      'ko' => monthsKo,
+      'zh' => monthsZh,
+      'en' => monthsEn,
+      _ => monthsId,
+    };
+
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 
+  // ── Dialog Logout ──────────────────────────────────────────────────────
   void _showLogoutDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
             Container(
@@ -537,30 +777,28 @@ class _ProfileTabState extends State<ProfileTab> {
                   color: Color(0xFFE53935), size: 22),
             ),
             const SizedBox(width: 12),
-            const Text(
-              'Keluar',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+            Text(
+              l10n.logout, // l10n
+              style: const TextStyle(
+                  fontWeight: FontWeight.w700, fontSize: 18),
             ),
           ],
         ),
         content: Text(
-          'Apakah kamu yakin ingin keluar dari akun ini?',
+          l10n.logoutConfirm, // l10n
           style: TextStyle(color: Colors.grey.shade600, height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             style: TextButton.styleFrom(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 20, vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
+                  borderRadius: BorderRadius.circular(12)),
             ),
-            child: Text(
-              'Batal',
-              style: TextStyle(color: Colors.grey.shade600),
-            ),
+            child: Text(l10n.cancel, // l10n
+                style: TextStyle(color: Colors.grey.shade600)),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -578,17 +816,24 @@ class _ProfileTabState extends State<ProfileTab> {
               backgroundColor: const Color(0xFFE53935),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  borderRadius: BorderRadius.circular(12)),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 20, vertical: 12),
               elevation: 0,
             ),
-            child: const Text('Keluar',
-                style: TextStyle(fontWeight: FontWeight.w600)),
+            child: Text(l10n.logout, // l10n
+                style: const TextStyle(fontWeight: FontWeight.w600)),
           ),
         ],
       ),
     );
   }
+}
+
+// ── Data class untuk pilihan bahasa ────────────────────────────────────────
+class _LangOption {
+  final String code;
+  final String label;
+  final String flag;
+  const _LangOption(this.code, this.label, this.flag);
 }

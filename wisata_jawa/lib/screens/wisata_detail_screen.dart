@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wisata_jawa/models/wisata.dart';
 import 'package:wisata_jawa/services/firestore_service.dart';
 import 'package:wisata_jawa/screens/add_wisata_screen.dart';
+import '../l10n/app_localizations.dart'; // l10n
+import '../main.dart'; // l10n - untuk MainApp.setLocale()
 
 class WisataDetailScreen extends StatefulWidget {
   final Wisata wisata;
@@ -59,6 +61,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAF8),
       body: CustomScrollView(
@@ -142,26 +145,26 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                         }
                       },
                       itemBuilder: (context) => [
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'edit',
                           child: Row(
                             children: [
-                              Icon(Icons.edit_outlined,
+                              const Icon(Icons.edit_outlined,
                                   size: 18, color: Color(0xFF2E7D32)),
-                              SizedBox(width: 10),
-                              Text('Edit Wisata'),
+                              const SizedBox(width: 10),
+                              Text(l10n.editWisata), // l10n
                             ],
                           ),
                         ),
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.delete_outline,
+                              const Icon(Icons.delete_outline,
                                   size: 18, color: Colors.red),
-                              SizedBox(width: 10),
-                              Text('Hapus',
-                                  style: TextStyle(color: Colors.red)),
+                              const SizedBox(width: 10),
+                              Text(l10n.delete, // l10n
+                                  style: const TextStyle(color: Colors.red)),
                             ],
                           ),
                         ),
@@ -263,9 +266,9 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          const Text(
-                            'Deskripsi',
-                            style: TextStyle(
+                          Text(
+                            l10n.detailDescription, // l10n
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
                               color: Color(0xFF1A1A1A),
@@ -307,7 +310,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                         ),
                         child: Column(
                           children: [
-                            _buildInfoRow(Icons.map_rounded, 'Provinsi',
+                            _buildInfoRow(Icons.map_rounded, l10n.detailProvince, // l10n
                                 widget.wisata.provinsi),
                             Padding(
                               padding:
@@ -315,7 +318,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                               child: Divider(
                                   color: Colors.grey.shade100, height: 1),
                             ),
-                            _buildInfoRow(Icons.location_city_rounded, 'Kota',
+                            _buildInfoRow(Icons.location_city_rounded, l10n.detailCity, // l10n
                                 widget.wisata.kota),
                             Padding(
                               padding:
@@ -325,7 +328,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                             ),
                             _buildInfoRow(
                               Icons.star_rounded,
-                              'Rating',
+                              l10n.detailRating, // l10n
                               '${widget.wisata.rating.toStringAsFixed(1)} / 5.0',
                             ),
                           ],
@@ -472,6 +475,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
   }
 
   void _showDeleteDialog() {
+    final l10n = AppLocalizations.of(context)!; // l10n
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -489,14 +493,14 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                   color: Color(0xFFE53935), size: 22),
             ),
             const SizedBox(width: 12),
-            const Text(
-              'Hapus Wisata',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+            Text(
+              l10n.deleteWisata, // l10n
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
             ),
           ],
         ),
         content: Text(
-          'Apakah kamu yakin ingin menghapus "${widget.wisata.nama}"? Tindakan ini tidak bisa dibatalkan.',
+          l10n.deleteConfirm(widget.wisata.nama), // l10n
           style: TextStyle(color: Colors.grey.shade600, height: 1.5),
         ),
         actions: [
@@ -510,7 +514,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
               ),
             ),
             child:
-                Text('Batal', style: TextStyle(color: Colors.grey.shade600)),
+                Text(l10n.cancel, style: TextStyle(color: Colors.grey.shade600)), // l10n
           ),
           ElevatedButton(
             onPressed: () async {
@@ -520,12 +524,12 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: const Row(
+                    content: Row(
                       children: [
-                        Icon(Icons.check_circle_rounded,
+                        const Icon(Icons.check_circle_rounded,
                             color: Colors.white, size: 20),
-                        SizedBox(width: 10),
-                        Text('Wisata berhasil dihapus'),
+                        const SizedBox(width: 10),
+                        Text(l10n.wisataDeleted), // l10n
                       ],
                     ),
                     backgroundColor: const Color(0xFF2E7D32),
@@ -548,8 +552,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               elevation: 0,
             ),
-            child: const Text('Hapus',
-                style: TextStyle(fontWeight: FontWeight.w600)),
+            child: Text(l10n.delete, // l10n
+                style: const TextStyle(fontWeight: FontWeight.w600)),
           ),
         ],
       ),

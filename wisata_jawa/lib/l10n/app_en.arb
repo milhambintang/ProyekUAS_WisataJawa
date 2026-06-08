@@ -1,0 +1,145 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Wisata Jawa",
+  "appTagline": "✨ Explore the Beauty of Java Island",
+  "appSubtitle": "Best Tourism Recommendations",
+
+  "greetingMorning": "Good Morning",
+  "greetingAfternoon": "Good Afternoon",
+  "greetingEvening": "Good Evening",
+  "greetingNight": "Good Night",
+
+  "headerTitle": "Java Island Tourism",
+  "headerSubtitle": "Discover the best tourist destinations in Java",
+
+  "allProvinces": "All",
+
+  "navHome": "Home",
+  "navSearch": "Search",
+  "navFavorites": "Favorites",
+  "navProfile": "Profile",
+
+  "loadingWisata": "Loading tourism...",
+  "loadingFavorites": "Loading favorites...",
+  "searchingWisata": "Searching tourism...",
+
+  "errorOccurred": "Oops! An Error Occurred",
+  "errorConnection": "Make sure your internet connection is stable",
+  "errorGeneral": "An error occurred",
+
+  "emptyWisata": "No Tourism Yet",
+  "emptyWisataHint": "Be the first to add a tourist spot!",
+  "emptyFavorites": "No Favorites Yet",
+  "emptyFavoritesHint": "Tap ♥ on a tourist spot to add it to favorites",
+
+  "addWisata": "Add Tourism",
+  "editWisata": "Edit Tourism",
+  "deleteWisata": "Delete Tourism",
+
+  "wisataAdded": "Tourism added successfully",
+  "wisataUpdated": "Tourism updated successfully",
+  "wisataDeleted": "Tourism deleted successfully",
+  "wisataFailed": "Failed: {error}",
+  "@wisataFailed": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+
+  "searchTitle": "Search Tourism",
+  "searchSubtitle": "Find your dream destination",
+  "searchHint": "Search by name, city, or province...",
+  "searchFavorite": "Search Your Favorite",
+  "searchFavoriteHint": "Type tourism name, city, or province",
+  "searchNotFound": "Tourism Not Found",
+  "searchNotFoundHint": "Try a different keyword",
+  "searchResultCount": "{count} tourism found",
+  "@searchResultCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "favoritesTitle": "Favorite Tourism",
+  "favoritesSubtitle": "Collection of tourism you like",
+  "favoritesCount": "{count} favorite tourism",
+  "@favoritesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "loginRequired": "Please login first",
+  "welcome": "Welcome",
+  "loginSubtitle": "Login to explore Java Island tourism",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "confirmPasswordLabel": "Confirm Password",
+  "loginButton": "Login",
+  "registerButton": "Register",
+  "noAccount": "Don't have an account? ",
+  "registerLink": "Register",
+  "hasAccount": "Already have an account? ",
+  "loginLink": "Login",
+  "createAccount": "Create New Account",
+  "registerSubtitle": "Join and discover Java Island tourism",
+  "passwordMismatch": "Passwords do not match",
+
+  "profileMemberSince": "Member since {date}",
+  "@profileMemberSince": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "profileWisataLabel": "Tourism",
+  "profileFavoriteLabel": "Favorites",
+  "profileWisataAdded": "Tourism You Added",
+  "profileNoWisata": "No tourism yet",
+  "profileNoWisataHint": "Tourism you add will appear here",
+
+  "logout": "Logout",
+  "logoutSubtitle": "Logout from your account",
+  "logoutConfirm": "Are you sure you want to logout from this account?",
+  "cancel": "Cancel",
+
+  "wisataNameLabel": "Tourism Name",
+  "wisataNameRequired": "Tourism name is required",
+  "provinceLabel": "Province",
+  "cityLabel": "City/District",
+  "cityRequired": "City is required",
+  "descriptionLabel": "Description",
+  "descriptionRequired": "Description is required",
+  "ratingLabel": "Rating: {value}",
+  "@ratingLabel": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "updateWisata": "Update Tourism",
+
+  "tapToPickImage": "Tap to pick an image",
+  "maxImageSize": "Maximum 700KB",
+  "changeImage": "Change",
+  "imageTooLarge": "Image is too large. Maximum 700KB after compression.",
+  "selectImage": "Please select a tourism image",
+
+  "detailDescription": "Description",
+  "detailProvince": "Province",
+  "detailCity": "City",
+  "detailRating": "Rating",
+  "deleteConfirm": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+  "@deleteConfirm": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "delete": "Delete",
+
+  "language": "Language",
+  "languageIndonesian": "Indonesia",
+  "languageEnglish": "English",
+  "languageThai": "ไทย",
+  "languageKorean": "한국어",
+  "languageChinese": "中文"
+}

@@ -3,6 +3,7 @@ import 'package:wisata_jawa/screens/home_tab.dart';
 import 'package:wisata_jawa/screens/search_tab.dart';
 import 'package:wisata_jawa/screens/favorites_tab.dart';
 import 'package:wisata_jawa/screens/profile_tab.dart';
+import '../l10n/app_localizations.dart'; // l10n
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
+
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -67,22 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(
                 icon: _buildNavIcon(Icons.home_outlined, 0),
                 activeIcon: _buildActiveNavIcon(Icons.home_rounded, 0),
-                label: 'Home',
+                label: l10n.navHome, // l10n
               ),
               BottomNavigationBarItem(
                 icon: _buildNavIcon(Icons.search_outlined, 1),
                 activeIcon: _buildActiveNavIcon(Icons.search_rounded, 1),
-                label: 'Cari',
+                label: l10n.navSearch, // l10n
               ),
               BottomNavigationBarItem(
                 icon: _buildNavIcon(Icons.favorite_outline, 2),
                 activeIcon: _buildActiveNavIcon(Icons.favorite_rounded, 2),
-                label: 'Favorit',
+                label: l10n.navFavorites, // l10n
               ),
               BottomNavigationBarItem(
                 icon: _buildNavIcon(Icons.person_outline, 3),
                 activeIcon: _buildActiveNavIcon(Icons.person_rounded, 3),
-                label: 'Profil',
+                label: l10n.navProfile, // l10n
               ),
             ],
           ),

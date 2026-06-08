@@ -5,6 +5,7 @@ import 'package:wisata_jawa/services/firestore_service.dart';
 import 'package:wisata_jawa/widgets/wisata_card.dart';
 import 'package:wisata_jawa/screens/wisata_detail_screen.dart';
 import 'dart:async';
+import '../l10n/app_localizations.dart'; // l10n
 
 class SearchTab extends StatefulWidget {
   const SearchTab({super.key});
@@ -103,6 +104,8 @@ class _SearchTabState extends State<SearchTab> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; // l10n
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAF8),
       body: Column(
@@ -134,23 +137,23 @@ class _SearchTabState extends State<SearchTab> {
               children: [
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Cari Wisata',
-                            style: TextStyle(
+                            l10n.searchTitle, // l10n
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                               letterSpacing: -0.5,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
-                            'Temukan destinasi impianmu',
-                            style: TextStyle(
+                            l10n.searchSubtitle, // l10n
+                            style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 13,
                             ),
@@ -198,7 +201,7 @@ class _SearchTabState extends State<SearchTab> {
                       color: Color(0xFF2D2D2D),
                     ),
                     decoration: InputDecoration(
-                      hintText: 'Cari nama wisata, kota, atau provinsi...',
+                      hintText: l10n.searchHint, // l10n
                       hintStyle: TextStyle(
                         color: Colors.grey.shade400,
                         fontSize: 14,
@@ -243,14 +246,14 @@ class _SearchTabState extends State<SearchTab> {
 
           // Results
           Expanded(
-            child: _buildBody(),
+            child: _buildBody(l10n),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AppLocalizations l10n) {
     if (_isSearching) {
       return Center(
         child: Column(
@@ -271,7 +274,7 @@ class _SearchTabState extends State<SearchTab> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Mencari wisata...',
+              l10n.searchingWisata, // l10n
               style: TextStyle(
                 color: Colors.grey.shade500,
                 fontSize: 13,
@@ -298,9 +301,9 @@ class _SearchTabState extends State<SearchTab> {
                   size: 40, color: Color(0xFF81C784)),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Cari Wisata Favoritmu',
-              style: TextStyle(
+            Text(
+              l10n.searchFavorite, // l10n
+              style: const TextStyle(
                 color: Color(0xFF1A1A1A),
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
@@ -308,7 +311,7 @@ class _SearchTabState extends State<SearchTab> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Ketik nama wisata, kota, atau provinsi',
+              l10n.searchFavoriteHint, // l10n
               style: TextStyle(
                 color: Colors.grey.shade500,
                 fontSize: 13,
@@ -335,9 +338,9 @@ class _SearchTabState extends State<SearchTab> {
                   size: 40, color: Color(0xFFFFB74D)),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Wisata Tidak Ditemukan',
-              style: TextStyle(
+            Text(
+              l10n.searchNotFound, // l10n
+              style: const TextStyle(
                 color: Color(0xFF1A1A1A),
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
@@ -345,7 +348,7 @@ class _SearchTabState extends State<SearchTab> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Coba kata kunci lain',
+              l10n.searchNotFoundHint, // l10n
               style: TextStyle(
                 color: Colors.grey.shade500,
                 fontSize: 13,
@@ -363,7 +366,7 @@ class _SearchTabState extends State<SearchTab> {
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
           child: Text(
-            '${_searchResults.length} wisata ditemukan',
+            l10n.searchResultCount(_searchResults.length), // l10n
             style: TextStyle(
               color: Colors.grey.shade600,
               fontSize: 13,
