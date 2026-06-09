@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
 
-  // Stream to listen to auth state changes
+  // Stream untuk mendengarkan perubahan status autentikasi (login/logout)
   Stream<auth.User?> get user {
     return _firebaseAuth.authStateChanges();
   }
@@ -17,7 +17,7 @@ class AuthService {
       );
       return credential.user;
     } catch (e) {
-      rethrow;
+      rethrow; // Biarkan error dilempar ke UI untuk ditangani (misal: tampilkan pesan error)
     }
   }
 
@@ -30,7 +30,7 @@ class AuthService {
       );
       return credential.user;
     } catch (e) {
-      rethrow;
+      rethrow; // Biarkan error dilempar ke UI untuk ditangani (misal: tampilkan pesan error)
     }
   }
 
@@ -39,6 +39,6 @@ class AuthService {
     await _firebaseAuth.signOut();
   }
 
-  // Current User
+  // Mendapatkan user saat ini (bisa null jika belum login)
   auth.User? get currentUser => _firebaseAuth.currentUser;
 }

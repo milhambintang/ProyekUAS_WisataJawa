@@ -72,7 +72,9 @@ class _LoginScreenState extends State<LoginScreen>
         _passwordController.text.trim(),
       );
       if (mounted) {
-        Navigator.of(context).pushReplacement(
+        // Jika login berhasil, navigasi ke halaman utama (HomeScreen) 
+        // dengan menggantikan halaman login saat ini
+        Navigator.of(context).pushReplacement( 
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       }

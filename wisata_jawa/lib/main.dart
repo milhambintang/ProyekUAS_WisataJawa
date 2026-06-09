@@ -74,11 +74,12 @@ class _MainAppState extends State<MainApp> {
         textTheme: GoogleFonts.poppinsTextTheme(),
         scaffoldBackgroundColor: const Color(0xFFF8FAF8),
       ),
+
       // ↓ Tiga baris ini yang mengaktifkan localization
       locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const SplashScreen(),
+      home: const SplashScreen(), 
     );
   }
 }

@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
     // Pulse animation for the icon
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1500), 
     )..repeat(reverse: true);
     _pulseAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
@@ -58,8 +58,8 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _checkAuth() async {
-    // Menunda 3 detik untuk efek splash + animasi
-    await Future.delayed(const Duration(seconds: 5));
+    // Tunggu selama 3 detik untuk menampilkan splash screen, bisa diganti dengan cek koneksi atau load data awal
+    await Future.delayed(const Duration(seconds: 3));
 
     // Cek apakah widget masih aktif (mounted) sebelum navigasi
     if (!mounted) return;

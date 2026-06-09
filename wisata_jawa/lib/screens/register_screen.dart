@@ -79,7 +79,9 @@ class _RegisterScreenState extends State<RegisterScreen>
         _passwordController.text.trim(),
       );
       if (mounted) {
-        // pushAndRemoveUntil menghapus semua halaman sebelumnya dari stack
+        // Membersihkan seluruh stack navigasi — setelah register berhasil, 
+        // user tidak bisa back ke halaman register maupun login. (route) 
+        // => false artinya hapus semua route sebelumnya.
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false,
