@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:wisata_jawa/models/wisata.dart';
 
+// Widget kartu untuk menampilkan informasi wisata, dengan gambar, nama, lokasi, rating, dan tombol favorit
 class WisataCard extends StatefulWidget {
   final Wisata wisata;
   final bool isFavorite;
   final VoidCallback onTap;
   final VoidCallback onFavoriteToggle;
 
+// Konstruktor untuk WisataCard, menerima objek Wisata, status favorit, dan callback untuk tap dan toggle favorit
   const WisataCard({
     super.key,
     required this.wisata,
@@ -20,10 +22,13 @@ class WisataCard extends StatefulWidget {
   State<WisataCard> createState() => _WisataCardState();
 }
 
+// State untuk WisataCard, yang mengelola animasi saat kartu
 class _WisataCardState extends State<WisataCard>
     with SingleTickerProviderStateMixin {
   bool _isPressed = false;
 
+// Build method untuk membangun UI kartu wisata, 
+// dengan GestureDetector untuk menangani tap dan animasi saat ditekan, serta menampilkan gambar, nama, lokasi, rating, dan tombol favorit
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

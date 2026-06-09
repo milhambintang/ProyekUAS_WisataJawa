@@ -396,7 +396,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     decorationColor: Colors.white,
                                   ),
                                 ),
-                              ],
+                              ], 
                             ),
                           ),
                         ),

@@ -42,6 +42,8 @@ class _SearchTabState extends State<SearchTab> {
     super.dispose();
   }
 
+// Mendengarkan perubahan pada favorit user, 
+// dan mengupdate state dengan daftar ID wisata yang difavoritkan user
   void _listenFavorites() {
     if (_userId == null) return;
     _favoriteSub = _firestoreService.getFavoriteIds(_userId!).listen((ids) {
@@ -53,6 +55,7 @@ class _SearchTabState extends State<SearchTab> {
     });
   }
 
+// Toggle status favorit untuk wisata tertentu, menambahkan atau menghapus dari favorit user
   void _toggleFavorite(String wisataId) {
     if (_userId == null) return;
     if (_favoriteIds.contains(wisataId)) {
@@ -62,6 +65,7 @@ class _SearchTabState extends State<SearchTab> {
     }
   }
 
+// Handler untuk perubahan pada search bar, dengan debounce untuk menghindari terlalu banyak query saat user mengetik
   void _onSearchChanged(String query) {
     _debounce?.cancel();
     if (query.trim().isEmpty) {
@@ -78,6 +82,7 @@ class _SearchTabState extends State<SearchTab> {
     });
   }
 
+// Melakukan pencarian wisata berdasarkan query, mengupdate state dengan hasil pencarian
   Future<void> _performSearch(String query) async {
     setState(() {
       _isSearching = true;

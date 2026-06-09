@@ -20,6 +20,7 @@ class ProfileTab extends StatefulWidget {
 // State untuk ProfileTab, yang menampilkan informasi profil user, menu pengaturan seperti ganti bahasa dan logout, 
 // serta daftar wisata yang ditambahkan oleh user, dengan interaksi untuk melihat detail wisata dan mengubah bahasa aplikasi
 class _ProfileTabState extends State<ProfileTab> {
+  // Service untuk autentikasi dan Firestore untuk database
   final AuthService _authService = AuthService();
   final FirestoreService _firestoreService = FirestoreService();
   final User? _user = FirebaseAuth.instance.currentUser;
@@ -36,7 +37,7 @@ class _ProfileTabState extends State<ProfileTab> {
   // Locale aktif saat ini
   String _currentLocale = 'id';
 
-  // Method untuk memformat tanggal menjadi string dengan format "dd MMMM yyyy",
+  // Format tanggal untuk menampilkan "Member since" dengan format yang lebih ramah, misal: "Member since Jan 2023"
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -47,7 +48,7 @@ class _ProfileTabState extends State<ProfileTab> {
     }
   }
 
-  // Helper method untuk memformat tanggal menjadi string dengan format "dd MMMM yyyy",
+  // Helper method untuk mengubah bahasa aplikasi
   void _changeLanguage(String langCode) {
     setState(() => _currentLocale = langCode);
     MainApp.setLocale(Locale(langCode));

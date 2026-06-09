@@ -19,7 +19,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
   final String? _userId = FirebaseAuth.instance.currentUser?.uid; // Ambil UID user yang sedang login, jika tidak ada maka null
 
 // Set untuk menyimpan ID wisata yang difavoritkan oleh user, 
-//dan StreamSubscription untuk mendengarkan perubahan data favorit
+// dan StreamSubscription untuk mendengarkan perubahan data favorit
   Set<String> _favoriteIds = {};
   StreamSubscription? _favoriteSub;
 
@@ -147,6 +147,7 @@ class _FavoritesTabState extends State<FavoritesTab> {
           // Konten utama untuk menampilkan daftar favorit, dengan handling untuk loading, error, dan empty state
           Expanded(
             child: StreamBuilder<List<Wisata>>(
+              // Stream untuk mendapatkan daftar wisata favorit user secara real-time, berdasarkan userId yang sedang login
               stream: _firestoreService.getFavoriteWisata(_userId!),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
